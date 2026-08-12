@@ -1,0 +1,15 @@
+services:
+  wordpress:
+    ports:
+      - "80:80"
+
+    volumes:
+      - uploads:/var/www/html/wp-content/uploads
+
+  db:
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  uploads:
+  db_data:

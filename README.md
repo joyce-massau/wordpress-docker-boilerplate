@@ -111,7 +111,7 @@ This project uses different `.env` files for each environment.
 docker compose \
   --env-file .env.dev \
   -f docker-compose.yml \
-  -f docker-compose.dev.yml \
+  -f docker-compose-dev.yml \
   up -d
 ```
 
@@ -121,7 +121,7 @@ docker compose \
 docker compose \
   --env-file .env.prod \
   -f docker-compose.yml \
-  -f docker-compose.prod.yml \
+  -f docker-composeprod.yml \
   up -d
 ```
 

@@ -1,0 +1,56 @@
+services:
+  db:
+    image: mariadb:11.8
+    restart: unless-stopped
+
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${MARIADB_DATABASE}
+      MARIADB_USER: ${MARIADB_USER}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+
+    volumes:
+      - db_data:/var/lib/mysql
+
+    networks:
+      - back
+
+  wordpress:
+    image: wordpress:7.0.2-php8.2-apache
+    restart: unless-stopped
+
+    depends_on:
+      - db
+
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: ${MARIADB_DATABASE}
+      WORDPRESS_DB_USER: ${MARIADB_USER}
+      WORDPRESS_DB_PASSWORD: ${MARIADB_PASSWORD}
+
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_ENVIRONMENT_TYPE', '${WP_ENVIRONMENT_TYPE}');
+        define('WP_DEBUG', ${WORDPRESS_DEBUG});
+
+    volumes:
+      - wordpress_data:/var/www/html
+
+    networks:
+      - back
+
+  adminer:
+    image: adminer
+    restart: always
+
+    depends_on:
+      - db
+
+    networks:
+      - back
+
+volumes:
+  db_data:
+  wordpress_data:
+
+networks:
+  back:
